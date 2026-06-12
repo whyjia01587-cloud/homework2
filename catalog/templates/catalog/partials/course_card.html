@@ -1,0 +1,26 @@
+<article class="course-card">
+    <a href="{% url 'course_detail' course.pk %}" class="course-image-link" aria-label="Open {{ course.title }}">
+        {% if course.image_url %}
+            <img src="{{ course.image_url }}" alt="{{ course.title }}" class="course-image">
+        {% else %}
+            <div class="image-placeholder">Course image</div>
+        {% endif %}
+    </a>
+    <div class="course-card-body">
+        <div class="card-topline">
+            <span>{{ course.category.name }}</span>
+            <span>${{ course.price }}</span>
+        </div>
+        <h2><a href="{% url 'course_detail' course.pk %}">{{ course.title }}</a></h2>
+        <p>{{ course.description|truncatewords:22 }}</p>
+        <ul class="meta-list">
+            <li>{{ course.get_difficulty_display }}</li>
+            <li>{{ course.duration_minutes }} min</li>
+            <li>{{ course.start_date }}</li>
+        </ul>
+        <div class="coach-line">
+            <span class="avatar">{{ course.coach.full_name|slice:':1' }}</span>
+            <span>{{ course.coach.full_name }}</span>
+        </div>
+    </div>
+</article>

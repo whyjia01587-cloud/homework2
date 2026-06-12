@@ -1,0 +1,21 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Courses | Fitness Catalog{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <div>
+        <p class="eyebrow">Catalog</p>
+        <h1>All fitness courses</h1>
+    </div>
+    <a class="button primary" href="{% url 'add_course' %}">Add course</a>
+</section>
+
+<div class="course-grid">
+    {% for course in courses %}
+        {% include 'catalog/partials/course_card.html' with course=course %}
+    {% empty %}
+        <p class="empty-state">There are no courses yet. Add a course and it will appear here immediately.</p>
+    {% endfor %}
+</div>
+{% endblock %}

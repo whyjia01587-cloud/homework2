@@ -1,0 +1,76 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ course.title }} | Fitness Catalog{% endblock %}
+
+{% block content %}
+<section class="detail-layout">
+    <div class="detail-image-wrap">
+        {% if course.image_url %}
+            <img src="{{ course.image_url }}" alt="{{ course.title }}" class="detail-image">
+        {% else %}
+            <div class="image-placeholder large">Course image</div>
+        {% endif %}
+    </div>
+
+    <article class="detail-card">
+        <p class="eyebrow">{{ course.category.name }}</p>
+        <h1>{{ course.title }}</h1>
+        <p class="detail-description">{{ course.description }}</p>
+
+        <div class="pill-row">
+            <span class="pill">{{ course.get_difficulty_display }}</span>
+            <span class="pill">{{ course.duration_minutes }} minutes</span>
+            {% if course.is_available %}
+                <span class="pill success">Available</span>
+            {% else %}
+                <span class="pill muted">Unavailable</span>
+            {% endif %}
+        </div>
+
+        <table class="detail-table">
+            <tbody>
+                <tr>
+                    <th>Coach</th>
+                    <td>{{ course.coach.full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Specialization</th>
+                    <td>{{ course.coach.specialization }}</td>
+                </tr>
+                <tr>
+                    <th>Experience</th>
+                    <td>{{ course.coach.experience_years }} years</td>
+                </tr>
+                <tr>
+                    <th>Certification</th>
+                    <td>{{ course.coach.profile.certification|default:'No certification listed' }}</td>
+                </tr>
+                <tr>
+                    <th>Start date</th>
+                    <td>{{ course.start_date }}</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>${{ course.price }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="members-block">
+            <h2>Registered members</h2>
+            <ul>
+                {% for member in course.members.all %}
+                    <li>{{ member.full_name }} - {{ member.email }}</li>
+                {% empty %}
+                    <li>No members registered for this course yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="detail-actions">
+            <a class="button secondary" href="{% url 'course_list' %}">Back to courses</a>
+            <a class="button danger" href="{% url 'delete_course' course.pk %}">Delete</a>
+        </div>
+    </article>
+</section>
+{% endblock %}

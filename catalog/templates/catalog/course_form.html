@@ -1,0 +1,39 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Add Course | Fitness Catalog{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="section-heading">
+        <p class="eyebrow">Create</p>
+        <h1>Add a new course</h1>
+        <p class="muted-text">Required fields are validated before saving to SQLite.</p>
+    </div>
+
+    <form class="course-form" method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-field {% if field.field.widget.input_type == 'checkbox' %}checkbox-field{% endif %}">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small>{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="field-error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button class="button primary" type="submit">Save course</button>
+            <a class="button secondary" href="{% url 'course_list' %}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

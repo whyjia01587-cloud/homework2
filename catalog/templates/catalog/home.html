@@ -1,0 +1,64 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Fitness Course Catalog{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow">University assignment</p>
+        <h1>Fitness Course Catalog</h1>
+        <p class="hero-text">
+            Browse fitness courses, meet active coaches, and manage new classes through a Django and SQLite catalog.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary" href="{% url 'course_list' %}">View courses</a>
+            <a class="button secondary" href="{% url 'add_course' %}">Add course</a>
+        </div>
+    </div>
+    <div class="hero-panel" aria-label="Catalog statistics">
+        <div>
+            <span>{{ course_count }}</span>
+            <p>Courses</p>
+        </div>
+        <div>
+            <span>{{ category_count }}</span>
+            <p>Categories</p>
+        </div>
+        <div>
+            <span>{{ coach_count }}</span>
+            <p>Active coaches</p>
+        </div>
+    </div>
+</section>
+
+<section class="section-heading">
+    <p class="eyebrow">Featured</p>
+    <h2>Available courses</h2>
+</section>
+
+<div class="course-grid">
+    {% for course in featured_courses %}
+        {% include 'catalog/partials/course_card.html' with course=course %}
+    {% empty %}
+        <p class="empty-state">No courses yet. Add the first one to start the catalog.</p>
+    {% endfor %}
+</div>
+
+<section class="category-strip">
+    <div class="section-heading compact">
+        <p class="eyebrow">Categories</p>
+        <h2>Training directions</h2>
+    </div>
+    <ul class="category-list">
+        {% for category in categories %}
+            <li>
+                <strong>{{ category.name }}</strong>
+                <span>{{ category.courses.count }} course{{ category.courses.count|pluralize }}</span>
+                <p>{{ category.description }}</p>
+            </li>
+        {% empty %}
+            <li>No categories have been added yet.</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

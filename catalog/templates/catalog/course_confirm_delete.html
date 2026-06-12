@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Delete Course | Fitness Catalog{% endblock %}
+
+{% block content %}
+<section class="confirm-card">
+    <p class="eyebrow">Confirm delete</p>
+    <h1>Delete {{ course.title }}?</h1>
+    <p>This action removes the course from the catalog and from member registrations.</p>
+
+    <form method="post" class="confirm-actions">
+        {% csrf_token %}
+        <button class="button danger" type="submit">Delete course</button>
+        <a class="button secondary" href="{% url 'course_detail' course.pk %}">Cancel</a>
+    </form>
+</section>
+{% endblock %}
